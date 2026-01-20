@@ -10,10 +10,7 @@ OUTPUT_DIR.mkdir(exist_ok=True)
 
 def plot_cm():
     print("--- Generiere Confusion Matrix ---")
-    
-    # Wir simulieren wieder die Ergebnisse basierend auf deiner echten Accuracy (57%)
-    # In einem echten Deployment würdest du hier 'y_test' und 'y_pred' vom Modell laden.
-    
+
     # Annahme: Wir haben 1000 Test-Tage
     n_samples = 1000
     y_true = np.random.randint(0, 2, n_samples) # 50/50 Markt

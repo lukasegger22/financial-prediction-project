@@ -14,11 +14,8 @@ def load_djia_data(filepath):
     df['Date'] = pd.to_datetime(df['Date'])
     
     # 2. Text kombinieren (Top1 bis Top25)
-    # Wir füllen leere Felder mit leerem String, damit es nicht crasht
     df.fillna('', inplace=True)
     
-    # Wir nehmen alle Spalten ab 'Top1' (Index 2 bis 27) und kleben sie zusammen
-    # Wir nutzen ein Leerzeichen als Trenner
     df['text'] = df.iloc[:, 2:27].apply(lambda row: ' '.join(row.values.astype(str)), axis=1)
     
     # 3. Label ist schon da ('Label' 0 oder 1)
@@ -40,24 +37,18 @@ def load_btc_data(filepath):
     df.sort_values('date', inplace=True)
     
     # 2. Label erstellen (Shift!)
-    # Wir wollen vorhersagen: Steigt der Kurs morgen?
-    # Wir berechnen die Änderung von Close(Heute) zu Close(Morgen)
     df['next_day_return'] = df['close_price'].pct_change().shift(-1)
     
     # Label: 1 wenn Return positiv, sonst 0
     df['label'] = (df['next_day_return'] > 0).astype(int)
     
-    # Letzte Zeile löschen (da wissen wir nicht, was morgen passiert)
     df.dropna(subset=['next_day_return'], inplace=True)
     
     # 3. Text bereinigen
-    # Der Text sieht so aus: "['Headline 1', 'Headline 2']"
-    # Wir entfernen die Klammern und Anführungszeichen
     def clean_article_list(text_list_str):
         if not isinstance(text_list_str, str):
             return ""
-        # Einfaches Bereinigen: Eckige Klammern und Anführungszeichen weg
-        # Das macht aus "['Hallo', 'Welt']" -> "Hallo Welt"
+
         cleaned = text_list_str.replace("['", "").replace("']", "").replace("', '", " ").replace('", "', " ")
         return cleaned
 
@@ -66,7 +57,6 @@ def load_btc_data(filepath):
     return df[['date', 'text', 'label']]
 
 if __name__ == "__main__":
-    # Kleiner Test, wenn man die Datei direkt ausführt
     base_path = Path(__file__).resolve().parent.parent / "data"
     
     # Test DJIA

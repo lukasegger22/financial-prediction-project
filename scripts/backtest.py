@@ -17,47 +17,37 @@ OUTPUT_DIR.mkdir(exist_ok=True)
 def run_backtest_with_plot():
     print("--- Generiere Backtest-Chart ---")
     
-    # 1. Daten laden
     # Wir laden die Daten und mergen die echten Labels dazu
     df = load_djia_data(BASE_DIR / "data/Combined_News_DJIA.csv")
     df_raw = pd.read_csv(BASE_DIR / "data/Combined_News_DJIA.csv")
     df_raw['Date'] = pd.to_datetime(df_raw['Date'])
     
-    # Sicherstellen, dass wir Label haben
     df = df.merge(df_raw[['Date', 'Label']], left_on='date', right_on='Date', how='left')
     
-    # 2. Simulation der AI Predictions (basierend auf unserer gemessenen Accuracy)
-    # HINWEIS: Da wir das Modell nicht gespeichert haben, simulieren wir hier
-    # einen Trader, der exakt so gut ist wie unser Trainings-Ergebnis (57%).
     TARGET_ACCURACY = 0.57
     print(f"Simuliere AI Trader mit {TARGET_ACCURACY:.0%} Trefferquote...")
     
     np.random.seed(42)
     true_labels = df['label'].values
     
-    # Erzeuge eine Maske: True = Vorhersage ist korrekt, False = Vorhersage ist falsch
     correct_prediction_mask = np.random.rand(len(true_labels)) < TARGET_ACCURACY
     
-    # Wenn Maske True -> Nimm echtes Label. Wenn False -> Nimm das Gegenteil.
     model_predictions = np.where(correct_prediction_mask, true_labels, 1 - true_labels)
     
-    # 3. Strategie Berechnung (Finanz-Logik)
+    # 3. Strategie Berechnung 
     capital_strategy = [10000.0]
     capital_buy_hold = [10000.0]
     dates = df['date'].tolist()
     daily_move = 0.01 # Annahme: 1% Bewegung pro Tag
     
     for i in range(len(df)):
-        # Wenn Label 1 war, ging Markt hoch (+), sonst runter (-)
         real_move = daily_move if true_labels[i] == 1 else -daily_move
         
-        # A) Buy & Hold: Macht jede Bewegung mit
+        # A) Buy & Hold: 
         new_bh = capital_buy_hold[-1] * (1 + real_move)
         capital_buy_hold.append(new_bh)
         
         # B) AI Strategy:
-        # Wenn AI sagt "Up" (1) -> Wir sind investiert.
-        # Wenn AI sagt "Down" (0) -> Wir sind in Cash (0% Rendite heute).
         if model_predictions[i] == 1:
             new_strat = capital_strategy[-1] * (1 + real_move)
         else:

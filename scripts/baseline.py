@@ -34,7 +34,6 @@ def run_baseline(data_type='stock'):
     )
 
     # 3. Vektorisierung (TF-IDF statt BERT Embeddings)
-    # Wir nehmen nur die Top 2000 Wörter, um Rauschen zu filtern
     print("Vektoriere Text (TF-IDF)...")
     vectorizer = TfidfVectorizer(max_features=2000, stop_words='english')
     X_train_vec = vectorizer.fit_transform(X_train)
@@ -59,7 +58,6 @@ def run_baseline(data_type='stock'):
     return acc_log, acc_rf
 
 if __name__ == "__main__":
-    # Wir lassen es für alle drei Szenarien laufen
     run_baseline('stock')
     run_baseline('crypto')
     # run_baseline('mixed') # Optional

@@ -1,0 +1,8 @@
+torch
+transformers
+pandas
+numpy
+matplotlib
+seaborn
+scikit-learn
+feedparser

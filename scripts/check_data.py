@@ -2,7 +2,6 @@ import pandas as pd
 from pathlib import Path
 import sys
 
-# Wir definieren das Projekt-Root-Verzeichnis (eine Ebene über diesem Skript)
 BASE_DIR = Path(__file__).resolve().parent.parent
 
 # Pfade zu den Daten definieren
@@ -22,10 +21,8 @@ def check_btc():
         print(f"   Anzahl Zeilen: {len(df)}")
         print(f"   Spalten: {list(df.columns)}")
         print("\n   Beispiel-Zeile (Erster Eintrag):")
-        # Wir versuchen sicherheitshalber nur die erste Zeile zu drucken
         print(df.iloc[0])
         
-        # Mentor-Check: Suche nach Text
         text_cols = [col for col in df.columns if 'news' in col.lower() or 'text' in col.lower() or 'title' in col.lower()]
         if text_cols:
             print(f"   ℹ️  Mögliche Text-Spalten gefunden: {text_cols}")

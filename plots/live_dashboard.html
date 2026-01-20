@@ -1,0 +1,124 @@
+
+    <!DOCTYPE html>
+    <html>
+    <head>
+        <title>AI Market Sentiment Dashboard</title>
+        <style>
+            body { font-family: 'Segoe UI', Arial, sans-serif; background-color: #f4f6f9; color: #333; padding: 20px; }
+            .container { max-width: 900px; margin: 0 auto; background: white; padding: 30px; border-radius: 10px; box-shadow: 0 4px 15px rgba(0,0,0,0.1); }
+            .header { border-bottom: 2px solid #eaeaea; padding-bottom: 15px; margin-bottom: 20px; display: flex; justify-content: space-between; align-items: center; }
+            .title { font-size: 24px; font-weight: bold; color: #2c3e50; }
+            .timestamp { color: #7f8c8d; font-size: 14px; }
+            
+            .summary-box { padding: 20px; border-radius: 8px; text-align: center; margin-bottom: 30px; color: white; font-weight: bold; font-size: 18px; }
+            .bullish { background: linear-gradient(135deg, #2ecc71, #27ae60); }
+            .bearish { background: linear-gradient(135deg, #e74c3c, #c0392b); }
+            .neutral { background: linear-gradient(135deg, #95a5a6, #7f8c8d); }
+            
+            table { width: 100%; border-collapse: collapse; }
+            th { text-align: left; padding: 12px; border-bottom: 2px solid #ddd; color: #7f8c8d; font-size: 12px; text-transform: uppercase; }
+            td { padding: 15px 12px; border-bottom: 1px solid #eee; font-size: 14px; }
+            .tag { padding: 4px 8px; border-radius: 4px; font-weight: bold; font-size: 12px; color: white; display: inline-block; width: 60px; text-align: center; }
+            .tag-up { background-color: #27ae60; }
+            .tag-down { background-color: #c0392b; }
+            .headline { font-weight: 500; }
+            .conf-bar { height: 4px; background: #eee; width: 100px; margin-top: 5px; border-radius: 2px; }
+            .conf-fill { height: 100%; border-radius: 2px; }
+        </style>
+    </head>
+    <body>
+        <div class="container">
+            <div class="header">
+                <div class="title">🤖 AI Market Sentiment Dashboard</div>
+                <div class="timestamp">2026-02-06 14:16:56</div>
+            </div>
+            
+            <div class="summary-box bullish">
+                MARKET TENDENCY: BULLISH (BUY) 
+                <div style="font-size: 14px; margin-top: 5px; opacity: 0.9;">
+                    5 Positive vs 2 Negative Signals
+                </div>
+            </div>
+            
+            <table>
+                <thead>
+                    <tr>
+                        <th>Prediction</th>
+                        <th>Confidence</th>
+                        <th>Live Headline (Source: Yahoo Finance)</th>
+                    </tr>
+                </thead>
+                <tbody>
+    
+        <tr>
+            <td><span class="tag tag-up">UP</span></td>
+            <td>
+                89.5%
+                <div class="conf-bar"><div class="conf-fill" style="width: 89.52043056488037%; background-color: #27ae60;"></div></div>
+            </td>
+            <td class="headline">Why Brandywine Realty Trust Stock Popped While the Market Flopped on Wednesday</td>
+        </tr>
+        
+        <tr>
+            <td><span class="tag tag-up">UP</span></td>
+            <td>
+                70.7%
+                <div class="conf-bar"><div class="conf-fill" style="width: 70.74812054634094%; background-color: #27ae60;"></div></div>
+            </td>
+            <td class="headline">Selloff wipes out nearly $1 trillion from software and services stocks as investors debate AI's existential threat</td>
+        </tr>
+        
+        <tr>
+            <td><span class="tag tag-down">DOWN</span></td>
+            <td>
+                53.0%
+                <div class="conf-bar"><div class="conf-fill" style="width: 53.03468704223633%; background-color: #c0392b;"></div></div>
+            </td>
+            <td class="headline">Banking 101: What is a bank, and what does it do?</td>
+        </tr>
+        
+        <tr>
+            <td><span class="tag tag-up">UP</span></td>
+            <td>
+                75.4%
+                <div class="conf-bar"><div class="conf-fill" style="width: 75.40284395217896%; background-color: #27ae60;"></div></div>
+            </td>
+            <td class="headline">Falling tech stocks and a plunge for bitcoin hit Wall Street</td>
+        </tr>
+        
+        <tr>
+            <td><span class="tag tag-down">DOWN</span></td>
+            <td>
+                77.4%
+                <div class="conf-bar"><div class="conf-fill" style="width: 77.38761901855469%; background-color: #c0392b;"></div></div>
+            </td>
+            <td class="headline">Qualcomm, Arm bear brunt of memory shortage as smartphone chip sales disappoint</td>
+        </tr>
+        
+        <tr>
+            <td><span class="tag tag-up">UP</span></td>
+            <td>
+                51.7%
+                <div class="conf-bar"><div class="conf-fill" style="width: 51.70050263404846%; background-color: #27ae60;"></div></div>
+            </td>
+            <td class="headline">Market Digest: AMGN, AMZN, GOOGL, IEX, QCOM, RJF, HCA</td>
+        </tr>
+        
+        <tr>
+            <td><span class="tag tag-up">UP</span></td>
+            <td>
+                97.7%
+                <div class="conf-bar"><div class="conf-fill" style="width: 97.67314195632935%; background-color: #27ae60;"></div></div>
+            </td>
+            <td class="headline">Why Shares of Interactive Brokers Stock Popped 16.4% Last Month</td>
+        </tr>
+        
+                </tbody>
+            </table>
+            <div style="margin-top: 20px; text-align: center; font-size: 12px; color: #aaa;">
+                Powered by FinBERT & PyTorch • Live Inference System
+            </div>
+        </div>
+    </body>
+    </html>
+    
