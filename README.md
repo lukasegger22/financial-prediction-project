@@ -22,21 +22,22 @@ This project implements a Transfer Learning pipeline using **FinBERT** to predic
 
    ````
 2. **Create a virtual environment (recommended)**
+3. ```bash
    python -m venv .venv
    source .venv/bin/activate  # On Windows use: .venv\Scripts\activate
 
    pip install -r requirements.txt
-
-3. **Install dependencies:**
-   
+   ````
+4. **Install dependencies:**
+   ```bash
    pip install -r requirements.txt
-
-4. **Usage / Execution**
-
+   ````
+5. **Usage / Execution**
+   ```bash
    python scripts/train.py
 
    python scripts/backtest.py
 
    python scripts/live_dashboard.py
-
+   ````
    
