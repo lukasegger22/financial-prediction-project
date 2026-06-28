@@ -14,23 +14,23 @@ OUTPUT_DIR = BASE_DIR / "plots"
 OUTPUT_DIR.mkdir(exist_ok=True)
 
 def calculate_max_drawdown(equity_curve):
-    """Berechnet den maximalen Verlust von einem Hochpunkt."""
+    """Calculate the maximum loss from a peak."""
     running_max = np.maximum.accumulate(equity_curve)
     drawdown = (equity_curve - running_max) / running_max
     return drawdown.min()
 
 def calculate_sharpe_ratio(returns, risk_free_rate=0.0):
-    """Berechnet die risikoadjustierte Rendite (Sharpe Ratio)."""
-    # Annualisiert 
+    """Calculate risk-adjusted return (Sharpe ratio)."""
+    # Annualized 
     mean_return = np.mean(returns) * 252
     std_return = np.std(returns) * np.sqrt(252)
     if std_return == 0: return 0
     return (mean_return - risk_free_rate) / std_return
 
 def run_professional_backtest():
-    print("--- Starte Professional Quant Backtest ---")
+    print("--- Starting professional quant backtest ---")
     
-    # 1. Daten laden
+    # 1. Load data
     df = load_djia_data(BASE_DIR / "data/Combined_News_DJIA.csv")
 
     
@@ -60,7 +60,7 @@ def run_professional_backtest():
             
         market_returns.append(ret)
         
-        # Strategie: Wenn Prediction=1 -> Long, sonst Cash (Return = 0)
+        # Strategy: If prediction=1 -> long, otherwise cash (return = 0)
         if model_predictions[i] == 1:
             strategy_returns.append(ret)
         else:
@@ -72,7 +72,7 @@ def run_professional_backtest():
     equity_market = 10000 * np.cumprod(1 + market_returns)
     equity_strategy = 10000 * np.cumprod(1 + strategy_returns)
     
-    #  METRIKEN BERECHNEN 
+    #  CALCULATE METRICS 
     sharpe_market = calculate_sharpe_ratio(market_returns)
     sharpe_strategy = calculate_sharpe_ratio(strategy_returns)
     
@@ -116,7 +116,7 @@ def run_professional_backtest():
     plt.tight_layout()
     save_path = OUTPUT_DIR / "professional_backtest.png"
     plt.savefig(save_path)
-    print(f"✅ Chart gespeichert unter: {save_path}")
+    print(f"✅ Chart saved to: {save_path}")
 
 if __name__ == "__main__":
     run_professional_backtest()

@@ -3,12 +3,12 @@ from transformers import BertModel
 
 class BERTSentimentClassifier(nn.Module):
     """
-    Zentrale Modell-Definition.
-    Verhindert Code-Duplizierung in train.py und backtest.py.
+    Central model definition.
+    Prevents code duplication in train.py and backtest.py.
     """
     def __init__(self, model_name, n_classes):
         super(BERTSentimentClassifier, self).__init__()
-        # Wir laden das Basis-Modell
+        # Load the base model
         self.bert = BertModel.from_pretrained(model_name)
         
         # Dropout gegen Overfitting

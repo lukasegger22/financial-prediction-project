@@ -6,12 +6,12 @@ from transformers import BertTokenizer
 from pathlib import Path
 from datetime import datetime
 
-# Setup Pfade
+# Set up paths
 BASE_DIR = Path(__file__).resolve().parent.parent
 sys.path.append(str(BASE_DIR))
 from src.model import BERTSentimentClassifier
 
-# --- KONFIGURATION ---
+# --- CONFIGURATION ---
 MODEL_NAME = 'ProsusAI/finbert' 
 MODEL_PATH = BASE_DIR / "models" / "finbert_trained.pth"
 MAX_LEN = 160
@@ -19,8 +19,8 @@ RSS_URL = "https://finance.yahoo.com/news/rssindex"
 OUTPUT_HTML = BASE_DIR / "plots" / "live_dashboard.html"
 
 def get_live_news(limit=7):
-    """Holt die aktuellsten Schlagzeilen von Yahoo Finance."""
-    print(f"📡 Verbinde mit Yahoo Finance News Feed...")
+    """Fetch the latest headlines from Yahoo Finance."""
+    print(f"📡 Connecting to Yahoo Finance News Feed...")
     feed = feedparser.parse(RSS_URL)
     headlines = []
     for entry in feed.entries[:limit]:
@@ -28,9 +28,9 @@ def get_live_news(limit=7):
     return headlines
 
 def generate_html(results, summary):
-    """Erstellt eine professionelle HTML-Ansicht für Screenshots."""
+    """Create a professional HTML view for screenshots."""
     
-    # CSS Styling für den "Bloomberg Terminal" Look
+    # CSS styling for the Bloomberg Terminal look
     html = f"""
     <!DOCTYPE html>
     <html>
@@ -113,8 +113,8 @@ def generate_html(results, summary):
     
     with open(OUTPUT_HTML, "w", encoding='utf-8') as f:
         f.write(html)
-    print(f"\n✅ HTML Dashboard gespeichert unter: {OUTPUT_HTML}")
-    print("👉 Öffne diese Datei im Browser für den perfekten Screenshot!")
+    print(f"\n✅ HTML dashboard saved to: {OUTPUT_HTML}")
+    print("👉 Open this file in your browser for the screenshot.")
 
 def run_dashboard():
     print(f"🔴 LIVE AI MARKET SENTIMENT DASHBOARD ({datetime.now().strftime('%H:%M:%S')})")
@@ -123,14 +123,14 @@ def run_dashboard():
     device = torch.device("cuda" if torch.cuda.is_available() else "cpu")
     if torch.backends.mps.is_available(): device = torch.device("mps")
     
-    print("🧠 Lade FinBERT AI Modell...")
+    print("🧠 Loading FinBERT AI model...")
     tokenizer = BertTokenizer.from_pretrained(MODEL_NAME)
     model = BERTSentimentClassifier(model_name=MODEL_NAME, n_classes=2)
     
     try:
         model.load_state_dict(torch.load(MODEL_PATH, map_location=device))
     except FileNotFoundError:
-        print("❌ Fehler: Modell nicht gefunden.")
+        print("❌ Error: Model not found.")
         return
 
     model.to(device)

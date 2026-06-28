@@ -1,0 +1,243 @@
+\documentclass[aspectratio=169]{beamer}
+
+\usepackage[T1]{fontenc}
+\usepackage[utf8]{inputenc}
+\usepackage{lmodern}
+\usepackage{xcolor}
+\usepackage{tikz}
+
+\definecolor{SlideBg}{HTML}{F7F8F5}
+\definecolor{Ink}{HTML}{141A17}
+\definecolor{Muted}{HTML}{5F6F67}
+\definecolor{Blue}{HTML}{285F8F}
+\definecolor{Green}{HTML}{198754}
+\definecolor{Red}{HTML}{C43C35}
+\definecolor{Gold}{HTML}{BD8428}
+\definecolor{Panel}{HTML}{FFFFFF}
+\definecolor{Line}{HTML}{DCE3DC}
+
+\setbeamertemplate{navigation symbols}{}
+\setbeamertemplate{footline}{}
+\setbeamertemplate{headline}{}
+
+\setbeamercolor{background canvas}{bg=SlideBg}
+\setbeamercolor{normal text}{fg=Ink,bg=SlideBg}
+\setbeamercolor{frametitle}{fg=Ink,bg=SlideBg}
+\setbeamerfont{frametitle}{size=\LARGE,series=\bfseries}
+
+\newcommand{\SlideTitle}[1]{%
+  {\Huge\bfseries\color{Ink} #1}
+}
+
+\newcommand{\Subtitle}[1]{%
+  {\Large\color{Muted} #1}
+}
+
+\newcommand{\InfoBox}[3]{%
+  \begin{tikzpicture}
+    \node[
+      draw=Line,
+      fill=Panel,
+      rounded corners=3pt,
+      line width=0.6pt,
+      inner sep=14pt,
+      text width=#1,
+      align=center
+    ] {
+      {\large\bfseries\color{#2} #3}
+    };
+  \end{tikzpicture}
+}
+
+\newcommand{\SmallBox}[4]{%
+  \begin{tikzpicture}
+    \node[
+      draw=Line,
+      fill=Panel,
+      rounded corners=3pt,
+      line width=0.6pt,
+      inner sep=12pt,
+      text width=#1,
+      minimum height=#2,
+      align=center
+    ] {
+      {\small\bfseries\color{#3} #4}
+    };
+  \end{tikzpicture}
+}
+
+\begin{document}
+
+% Slide 1
+\begin{frame}[plain]
+  \centering
+  \vspace{0.9cm}
+
+  \SlideTitle{Can AI Read Financial News?}
+
+  \vspace{0.45cm}
+
+  \Subtitle{News Sentiment Based Market Prediction}
+
+  \vspace{1.1cm}
+
+  {\Large\bfseries Lukas Egger}
+
+  \vspace{0.15cm}
+
+  {\large\color{Muted} Scientific Showcase 2026}
+
+  \vfill
+
+  \begin{tikzpicture}
+    \node[
+      draw=Line,
+      fill=Panel,
+      rounded corners=3pt,
+      inner sep=10pt,
+      text width=0.62\textwidth,
+      align=center
+    ] {
+      {\small\bfseries\color{Blue} Artificial Intelligence for Market Direction Prediction}
+    };
+  \end{tikzpicture}
+\end{frame}
+
+% Slide 4
+\begin{frame}[plain]
+  \vspace{0.25cm}
+  {\LARGE\bfseries Why FinBERT?}
+
+  \vspace{0.55cm}
+
+  \begin{columns}[T,onlytextwidth]
+    \begin{column}{0.48\textwidth}
+      \centering
+      {\Large\bfseries Keyword Model}
+
+      \vspace{0.35cm}
+
+      \SmallBox{0.78\textwidth}{1.35cm}{Red}{``panic'' $\rightarrow$ DOWN?}
+
+      \vspace{0.22cm}
+
+      \SmallBox{0.78\textwidth}{1.35cm}{Muted}{``cut'' can mean\\job cuts or rate cuts}
+    \end{column}
+
+    \begin{column}{0.48\textwidth}
+      \centering
+      {\Large\bfseries FinBERT}
+
+      \vspace{0.35cm}
+
+      \SmallBox{0.78\textwidth}{1.35cm}{Green}{Reads financial context}
+
+      \vspace{0.22cm}
+
+      \SmallBox{0.78\textwidth}{1.35cm}{Blue}{Trained on financial language}
+    \end{column}
+  \end{columns}
+
+  \vspace{0.6cm}
+
+  \centering
+  \begin{tikzpicture}
+    \node[
+      draw=Line,
+      fill=Panel,
+      rounded corners=3pt,
+      inner sep=12pt,
+      text width=0.86\textwidth,
+      align=center
+    ] {
+      {\bfseries Synthetic Signal Injection}\\[4pt]
+      upgrade $\rightarrow$ {\color{Green}\bfseries UP}
+      \hspace{0.55cm}
+      downgrade $\rightarrow$ {\color{Red}\bfseries DOWN}
+      \hspace{0.55cm}
+      buy $\rightarrow$ {\color{Green}\bfseries UP}
+      \hspace{0.55cm}
+      sell $\rightarrow$ {\color{Red}\bfseries DOWN}
+    };
+  \end{tikzpicture}
+\end{frame}
+
+% Slide 7
+\begin{frame}[plain]
+  \vspace{0.25cm}
+  {\LARGE\bfseries Reality Check \& Conclusion}
+
+  \vspace{0.55cm}
+
+  \begin{columns}[T,onlytextwidth]
+    \begin{column}{0.48\textwidth}
+      \centering
+      {\Large\bfseries\color{Green} Works Better}
+
+      \vspace{0.35cm}
+
+      \begin{tikzpicture}
+        \node[
+          draw=Line,
+          fill=Panel,
+          rounded corners=3pt,
+          inner sep=15pt,
+          text width=0.72\textwidth,
+          minimum height=3.2cm,
+          align=center
+        ] {
+          {\bfseries Formal Finance News}\\[10pt]
+          rate cuts\\
+          earnings\\
+          inflation\\
+          downgrade
+        };
+      \end{tikzpicture}
+    \end{column}
+
+    \begin{column}{0.48\textwidth}
+      \centering
+      {\Large\bfseries\color{Red} Fails More Often}
+
+      \vspace{0.35cm}
+
+      \begin{tikzpicture}
+        \node[
+          draw=Line,
+          fill=Panel,
+          rounded corners=3pt,
+          inner sep=15pt,
+          text width=0.72\textwidth,
+          minimum height=3.2cm,
+          align=center
+        ] {
+          {\bfseries Crypto Slang}\\[10pt]
+          HODL\\
+          to the moon\\
+          diamond hands\\
+          FUD
+        };
+      \end{tikzpicture}
+    \end{column}
+  \end{columns}
+
+  \vspace{0.55cm}
+
+  \centering
+  \begin{tikzpicture}
+    \node[
+      draw=Line,
+      fill=Panel,
+      rounded corners=3pt,
+      inner sep=12pt,
+      text width=0.8\textwidth,
+      align=center
+    ] {
+      {\Large\bfseries Conclusion}\\[5pt]
+      Financial news contains useful signals, but the strongest value is
+      {\color{Blue}\bfseries automated risk management}.
+    };
+  \end{tikzpicture}
+\end{frame}
+
+\end{document}

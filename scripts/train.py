@@ -10,14 +10,14 @@ import numpy as np
 from sklearn.model_selection import train_test_split
 from sklearn.metrics import accuracy_score
 
-# Setup Pfade
+# Set up paths
 BASE_DIR = Path(__file__).resolve().parent.parent
 sys.path.append(str(BASE_DIR))
 
 from src.data_loader import load_djia_data, load_btc_data
 from src.model import BERTSentimentClassifier 
 
-# --- KONFIGURATION ---
+# --- CONFIGURATION ---
 MODEL_NAME = 'ProsusAI/finbert'  
 MAX_LEN = 160
 BATCH_SIZE = 4
@@ -27,13 +27,13 @@ LEARNING_RATE = 2e-5
 #  ML TRICK: DATA AUGMENTATION 
 def augment_data_with_analyst_ratings(original_df):
     """
-    Erzeugt synthetische Trainingsdaten für Analysten-Sprache.
-    Das bringt dem Modell bei, dass Wörter wie 'Downgrade' oder 'Sell' wichtiger sind
-    als Banknamen wie 'Goldman Sachs'.
+    Create synthetic training data for analyst language.
+    This teaches the model that words like 'Downgrade' or 'Sell' are more important
+    than bank names like 'Goldman Sachs'.
     """
-    print("💉 Injiziere synthetische Analysten-Daten (Data Augmentation)...")
+    print("💉 Injecting synthetic analyst-rating data (data augmentation)...")
     
-    # Muster für klare Signale
+    # Patterns for clear signals
     data = []
     
     # 1. Bearish Examples (Muss als DOWN/0 gelernt werden)
@@ -67,10 +67,10 @@ def augment_data_with_analyst_ratings(original_df):
     banks = ["Goldman Sachs", "JPMorgan", "Morgan Stanley", "Bank of America", "Citi", "Deutsche Bank"]
     stocks = ["Apple", "Tesla", "Nvidia", "AMD", "Microsoft", "Amazon", "Intel", "Super Micro"]
     
-    # Wir generieren zufällige Kombinationen
+    # Generate random combinations
     import random
     
-    # Wir erzeugen 200 zusätzliche Trainingsbeispiele (Genug, damit BERT es lernt)
+    # Generate 200 additional training examples (enough for BERT to learn)
     for _ in range(100):
         # Bearish (Label 0)
         tmpl = random.choice(bearish_templates)
@@ -84,12 +84,12 @@ def augment_data_with_analyst_ratings(original_df):
         
     aug_df = pd.DataFrame(data)
     
-    # Zusammenfügen
+    # Combine
     combined_df = pd.concat([original_df, aug_df], ignore_index=True)
-    # Mischen
+    # Shuffle
     combined_df = combined_df.sample(frac=1, random_state=42).reset_index(drop=True)
     
-    print(f"✅ Datensatz erweitert: {len(original_df)} -> {len(combined_df)} Zeilen.")
+    print(f"✅ Dataset expanded: {len(original_df)} -> {len(combined_df)} rows.")
     return combined_df
 
 class CryptoStockDataset(Dataset):
@@ -123,7 +123,7 @@ class CryptoStockDataset(Dataset):
 def train_model(data_type='stock'):
     data_path = BASE_DIR / "data"
     
-    # Daten laden
+    # Load data
     if data_type == 'mixed':
         df_stock = load_djia_data(data_path / "Combined_News_DJIA.csv")
         df_crypto = load_btc_data(data_path / "BTC.csv")
@@ -133,7 +133,7 @@ def train_model(data_type='stock'):
     else:
         df = load_btc_data(data_path / "BTC.csv")
 
-    # Wir erweitern die Daten VOR dem Split
+    # Expand the data before the split
     df = augment_data_with_analyst_ratings(df)
 
     # Split
@@ -149,15 +149,15 @@ def train_model(data_type='stock'):
     device = torch.device("cuda" if torch.cuda.is_available() else "cpu")
     if torch.backends.mps.is_available():
         device = torch.device("mps")
-        print("🚀 Nutze Apple Silicon GPU (MPS)!")
+        print("🚀 Using Apple Silicon GPU (MPS)!")
     else:
-        print(f"Nutze Gerät: {device}")
+        print(f"Using device: {device}")
     
     model = BERTSentimentClassifier(model_name=MODEL_NAME, n_classes=2).to(device)
     optimizer = AdamW(model.parameters(), lr=LEARNING_RATE)
     loss_fn = nn.CrossEntropyLoss().to(device)
 
-    print("\nStarte Training mit Data Augmentation...")
+    print("\nStarting training with data augmentation...")
     for epoch in range(EPOCHS):
         model.train()
         total_loss = 0
@@ -175,7 +175,7 @@ def train_model(data_type='stock'):
         
         print(f"Epoch {epoch+1}/{EPOCHS} | Loss: {total_loss/len(train_loader):.4f}")
 
-    print("\nStarte Evaluation...")
+    print("\nStarting evaluation...")
     model.eval()
     predictions, real_values = [], []
     with torch.no_grad():
@@ -195,7 +195,7 @@ def train_model(data_type='stock'):
     model_save_path.mkdir(exist_ok=True)
     save_file = model_save_path / "finbert_trained.pth"
     torch.save(model.state_dict(), save_file)
-    print(f"💾 Modell erfolgreich gespeichert unter: {save_file}")
+    print(f"💾 Model saved successfully to: {save_file}")
 
 if __name__ == "__main__":
     train_model(data_type='stock')

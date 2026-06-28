@@ -8,16 +8,16 @@ from sklearn.linear_model import LogisticRegression
 from sklearn.ensemble import RandomForestClassifier
 from sklearn.metrics import accuracy_score, classification_report
 
-# Setup Pfade
+# Set up paths
 BASE_DIR = Path(__file__).resolve().parent.parent
 sys.path.append(str(BASE_DIR))
 from src.data_loader import load_djia_data, load_btc_data
 
 def run_baseline(data_type='stock'):
-    print(f"\n--- Starte CLASSIC ML Baseline für {data_type.upper()} ---")
+    print(f"\n--- Starting CLASSIC ML baseline for {data_type.upper()} ---")
     data_path = BASE_DIR / "data"
 
-    # 1. Daten laden
+    # 1. Load data
     if data_type == 'stock':
         df = load_djia_data(data_path / "Combined_News_DJIA.csv")
     elif data_type == 'crypto':
@@ -33,22 +33,22 @@ def run_baseline(data_type='stock'):
         df['text'], df['label'], test_size=0.2, random_state=42
     )
 
-    # 3. Vektorisierung (TF-IDF statt BERT Embeddings)
-    print("Vektoriere Text (TF-IDF)...")
+    # 3. Vectorization (TF-IDF instead of BERT embeddings)
+    print("Vectorizing text (TF-IDF)...")
     vectorizer = TfidfVectorizer(max_features=2000, stop_words='english')
     X_train_vec = vectorizer.fit_transform(X_train)
     X_test_vec = vectorizer.transform(X_test)
 
-    # 4. Modell A: Logistische Regression (Der Klassiker)
-    print("Trainiere Logistic Regression...")
+    # 4. Model A: Logistic Regression (the classic choice)
+    print("Training Logistic Regression...")
     clf_log = LogisticRegression(max_iter=1000)
     clf_log.fit(X_train_vec, y_train)
     preds_log = clf_log.predict(X_test_vec)
     acc_log = accuracy_score(y_test, preds_log)
     print(f"👉 Logistic Regression Accuracy: {acc_log:.4f}")
 
-    # 5. Modell B: Random Forest (Entscheidungsbäume)
-    print("Trainiere Random Forest...")
+    # 5. Model B: Random Forest (decision trees)
+    print("Training Random Forest...")
     clf_rf = RandomForestClassifier(n_estimators=100, random_state=42)
     clf_rf.fit(X_train_vec, y_train)
     preds_rf = clf_rf.predict(X_test_vec)

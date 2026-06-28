@@ -4,50 +4,50 @@ import torch.nn.functional as F
 from transformers import BertTokenizer
 from pathlib import Path
 
-# Setup Pfade
+# Set up paths
 BASE_DIR = Path(__file__).resolve().parent.parent
 sys.path.append(str(BASE_DIR))
 from src.model import BERTSentimentClassifier
 
-# --- KONFIGURATION ---
+# --- CONFIGURATION ---
 MODEL_NAME = 'ProsusAI/finbert' 
 MODEL_PATH = BASE_DIR / "models" / "finbert_trained.pth"
 MAX_LEN = 160
 
 def run_live_prediction():
     print("\n--- 🔴 LIVE AI TRADING SYSTEM ---")
-    print("Lade das trainierte Modell...")
+    print("Loading trained model...")
     
     device = torch.device("cuda" if torch.cuda.is_available() else "cpu")
     if torch.backends.mps.is_available(): device = torch.device("mps")
 
-    # 1. Architektur aufbauen
+    # 1. Build architecture
     tokenizer = BertTokenizer.from_pretrained(MODEL_NAME)
     model = BERTSentimentClassifier(model_name=MODEL_NAME, n_classes=2)
     
-    # 2. Das gespeicherte Wissen laden
+    # 2. Load saved weights
     try:
         model.load_state_dict(torch.load(MODEL_PATH, map_location=device))
     except FileNotFoundError:
-        print("❌ Fehler: Kein gespeichertes Modell gefunden!")
-        print("Bitte führe erst 'python scripts/train.py' aus, um das Modell zu speichern.")
+        print("❌ Error: No saved model found!")
+        print("Please run 'python scripts/train.py' first to save the model.")
         return
 
     model.to(device)
     model.eval()
-    print("✅ System bereit. Warte auf News...")
+    print("✅ System ready. Waiting for news...")
     print("-" * 50)
 
     while True:
         # User Input
-        user_text = input("\n📰 Gib eine Schlagzeile ein (oder 'q' zum Beenden): \n> ")
+        user_text = input("\n📰 Enter a headline (or 'q' to quit): \n> ")
         
         if user_text.lower() in ['q', 'quit', 'exit']:
-            print("System wird heruntergefahren.")
+            print("Shutting down system.")
             break
             
         if len(user_text) < 5:
-            print("⚠️ Text zu kurz.")
+            print("⚠️ Text is too short.")
             continue
 
         # Vorhersage
@@ -66,22 +66,22 @@ def run_live_prediction():
 
         with torch.no_grad():
             outputs = model(input_ids, attention_mask)
-            # Softmax für Wahrscheinlichkeiten
+            # Softmax for probabilities
             probs = F.softmax(outputs, dim=1)
             
             # Wir nehmen an: Index 1 = UP, Index 0 = DOWN
             prediction = torch.argmax(probs, dim=1).item()
             confidence = probs[0][prediction].item()
 
-        # Ausgabe
+        # Output
         if prediction == 1:
-            print(f"\n📈 SIGNAL: KAUFEN (UP)")
+            print(f"\n📈 SIGNAL: BUY (UP)")
             print(f"   Confidence: {confidence:.2%}")
-            print(f"   AI Interpretation: Diese Nachricht ist bullisch.")
+            print(f"   AI Interpretation: This headline is bullish.")
         else:
-            print(f"\n📉 SIGNAL: VERKAUFEN / CASH (DOWN)")
+            print(f"\n📉 SIGNAL: SELL / CASH (DOWN)")
             print(f"   Confidence: {confidence:.2%}")
-            print(f"   AI Interpretation: Risiko erkannt. Markt könnte fallen.")
+            print(f"   AI Interpretation: Risk detected. The market may fall.")
         print("-" * 50)
 
 if __name__ == "__main__":

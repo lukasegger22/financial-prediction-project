@@ -9,7 +9,7 @@ OUTPUT_DIR = BASE_DIR / "plots"
 OUTPUT_DIR.mkdir(exist_ok=True)
 
 def plot_model_comparison():
-    print("--- Generiere Vergleichs-Chart (Classic vs. DL) ---")
+    print("--- Generating comparison chart (Classic vs. DL) ---")
     
     results = {
         'Model': ['Random Chance', 'Logistic Regression', 'Random Forest', 'BERT (Deep Learning)'],
@@ -45,7 +45,7 @@ def plot_model_comparison():
     
     save_path = OUTPUT_DIR / "model_comparison.png"
     plt.savefig(save_path)
-    print(f"✅ Vergleichs-Chart gespeichert unter: {save_path}")
+    print(f"✅ Comparison chart saved to: {save_path}")
 
 if __name__ == "__main__":
     plot_model_comparison()

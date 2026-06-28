@@ -9,20 +9,20 @@ OUTPUT_DIR = BASE_DIR / "plots"
 OUTPUT_DIR.mkdir(exist_ok=True)
 
 def plot_cm():
-    print("--- Generiere Confusion Matrix ---")
+    print("--- Generating confusion matrix ---")
 
     # Annahme: Wir haben 1000 Test-Tage
     n_samples = 1000
-    y_true = np.random.randint(0, 2, n_samples) # 50/50 Markt
+    y_true = np.random.randint(0, 2, n_samples) # 50/50 market
     
-    # Wir erzeugen Predictions mit 57% Trefferquote
+    # Generate predictions with 57% accuracy
     mask = np.random.rand(n_samples) < 0.57
     y_pred = np.where(mask, y_true, 1 - y_true)
     
-    # Matrix berechnen
+    # Calculate matrix
     cm = confusion_matrix(y_true, y_pred)
     
-    # Plotten
+    # Plot
     plt.figure(figsize=(8, 6))
     sns.heatmap(cm, annot=True, fmt='d', cmap='Blues', cbar=False,
                 xticklabels=['Down (0)', 'Up (1)'],
@@ -34,7 +34,7 @@ def plot_cm():
     
     save_path = OUTPUT_DIR / "confusion_matrix.png"
     plt.savefig(save_path)
-    print(f"✅ Matrix gespeichert unter: {save_path}")
+    print(f"✅ Matrix saved to: {save_path}")
 
 if __name__ == "__main__":
     plot_cm()

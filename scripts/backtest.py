@@ -15,9 +15,9 @@ OUTPUT_DIR = BASE_DIR / "plots"
 OUTPUT_DIR.mkdir(exist_ok=True)
 
 def run_backtest_with_plot():
-    print("--- Generiere Backtest-Chart ---")
+    print("--- Generating backtest chart ---")
     
-    # Wir laden die Daten und mergen die echten Labels dazu
+    # Load the data and merge the real labels
     df = load_djia_data(BASE_DIR / "data/Combined_News_DJIA.csv")
     df_raw = pd.read_csv(BASE_DIR / "data/Combined_News_DJIA.csv")
     df_raw['Date'] = pd.to_datetime(df_raw['Date'])
@@ -25,7 +25,7 @@ def run_backtest_with_plot():
     df = df.merge(df_raw[['Date', 'Label']], left_on='date', right_on='Date', how='left')
     
     TARGET_ACCURACY = 0.57
-    print(f"Simuliere AI Trader mit {TARGET_ACCURACY:.0%} Trefferquote...")
+    print(f"Simulating AI trader with {TARGET_ACCURACY:.0%} accuracy...")
     
     np.random.seed(42)
     true_labels = df['label'].values
@@ -34,7 +34,7 @@ def run_backtest_with_plot():
     
     model_predictions = np.where(correct_prediction_mask, true_labels, 1 - true_labels)
     
-    # 3. Strategie Berechnung 
+    # 3. Strategy calculation 
     capital_strategy = [10000.0]
     capital_buy_hold = [10000.0]
     dates = df['date'].tolist()
@@ -54,21 +54,21 @@ def run_backtest_with_plot():
             new_strat = capital_strategy[-1] # Cash halten
         capital_strategy.append(new_strat)
 
-    # 4. Visualisierung
+    # 4. Visualization
     sns.set_style("whitegrid")
     plt.figure(figsize=(12, 6))
     
-    plt.plot(dates, capital_buy_hold[1:], label='Buy & Hold (Markt)', color='gray', alpha=0.6, linestyle='--')
+    plt.plot(dates, capital_buy_hold[1:], label='Buy & Hold (Market)', color='gray', alpha=0.6, linestyle='--')
     plt.plot(dates, capital_strategy[1:], label=f'AI Strategy (Acc: {TARGET_ACCURACY:.0%})', color='green', linewidth=2)
     
-    plt.title(f"Backtest: AI vs. Markt", fontsize=16)
-    plt.xlabel("Jahr", fontsize=12)
-    plt.ylabel("Portfolio Wert (€)", fontsize=12)
+    plt.title(f"Backtest: AI vs. Market", fontsize=16)
+    plt.xlabel("Year", fontsize=12)
+    plt.ylabel("Portfolio Value (€)", fontsize=12)
     plt.legend(fontsize=12)
     
     save_path = OUTPUT_DIR / "backtest_performance.png"
     plt.savefig(save_path)
-    print(f"✅ Grafik gespeichert unter: {save_path}")
+    print(f"✅ Chart saved to: {save_path}")
 
 if __name__ == "__main__":
     run_backtest_with_plot()

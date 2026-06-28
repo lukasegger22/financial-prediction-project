@@ -5,9 +5,9 @@ from pathlib import Path
 
 def load_djia_data(filepath):
     """
-    Lädt und bereinigt den Aktien-Datensatz (Kaggle 1).
+    Load and clean the stock dataset (Kaggle 1).
     """
-    print(f"Lade DJIA Daten von {filepath}...")
+    print(f"Loading DJIA data from {filepath}...")
     df = pd.read_csv(filepath)
     
     # 1. Datum formatieren
@@ -25,13 +25,13 @@ def load_djia_data(filepath):
 
 def load_btc_data(filepath):
     """
-    Lädt und bereinigt den Bitcoin-Datensatz (Kaggle 2).
-    WICHTIG: Erstellt das Label basierend auf dem Preis von MORGEN.
+    Load and clean the Bitcoin dataset (Kaggle 2).
+    IMPORTANT: Creates the label based on tomorrow's price.
     """
-    print(f"Lade BTC Daten von {filepath}...")
+    print(f"Loading BTC data from {filepath}...")
     df = pd.read_csv(filepath)
     
-    # 1. Datum formatieren (Spalte heißt 'begins_at')
+    # 1. Format date (column is named 'begins_at')
     df.rename(columns={'begins_at': 'date', 'articles': 'raw_text'}, inplace=True)
     df['date'] = pd.to_datetime(df['date'])
     df.sort_values('date', inplace=True)
@@ -62,13 +62,13 @@ if __name__ == "__main__":
     # Test DJIA
     try:
         df_djia = load_djia_data(base_path / "Combined_News_DJIA.csv")
-        print(f"DJIA Success: {len(df_djia)} Zeilen. Beispiel Text: {df_djia.iloc[0]['text'][:50]}...")
+        print(f"DJIA success: {len(df_djia)} rows. Example text: {df_djia.iloc[0]['text'][:50]}...")
     except Exception as e:
         print(f"DJIA Error: {e}")
 
     # Test BTC
     try:
         df_btc = load_btc_data(base_path / "BTC.csv")
-        print(f"BTC Success: {len(df_btc)} Zeilen. Beispiel Text: {df_btc.iloc[0]['text'][:50]}...")
+        print(f"BTC success: {len(df_btc)} rows. Example text: {df_btc.iloc[0]['text'][:50]}...")
     except Exception as e:
         print(f"BTC Error: {e}")

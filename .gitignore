@@ -1,2 +1,8 @@
 .venv/
 data/
+.DS_Store
+plots/.DS_Store
+.pycache/
+__pycache__/
+build/
+models/*.pth
